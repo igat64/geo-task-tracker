@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :geo_task_tracker, GeoTaskTracker.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "igat",
+  password: "",
   database: "geo_task_tracker_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
