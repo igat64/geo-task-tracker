@@ -25,8 +25,8 @@ defmodule GeoTaskTracker.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(:test), do: ["lib", "priv/support", "test/support"]
+  defp elixirc_paths(_), do: ["lib", "priv/support"]
 
   # Specifies your project dependencies.
   #
@@ -43,7 +43,7 @@ defmodule GeoTaskTracker.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:geo, "~> 3.0"}
+      {:geo_postgis, "~> 3.1"}
     ]
   end
 

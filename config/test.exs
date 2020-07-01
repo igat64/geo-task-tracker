@@ -11,7 +11,7 @@ config :geo_task_tracker, GeoTaskTracker.Repo,
   database: "geo_task_tracker_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox,
-  extensions: [{Geo.PostGIS.Extension, library: Geo}]
+  types: GeoTaskTracker.PostgresTypes
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
