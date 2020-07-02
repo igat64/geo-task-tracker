@@ -5,7 +5,9 @@ defmodule GeoTaskTrackerWeb.ErrorViewTest do
   import Phoenix.View
 
   test "renders 404.json" do
-    assert render(GeoTaskTrackerWeb.ErrorView, "404.json", []) == %{errors: %{detail: "Not Found"}}
+    assert render(GeoTaskTrackerWeb.ErrorView, "404.json", []) == %{
+             errors: %{detail: "Not Found"}
+           }
   end
 
   test "renders 500.json" do

@@ -13,9 +13,12 @@ defmodule GeoTaskTracker.Task do
   end
 
   @doc false
-  def changeset(task, attrs) do
+  def changeset(%GeoTaskTracker.Task{} = task, attrs) do
     task
-    |> cast(attrs, [:title])
-    |> validate_required([:title])
+    |> cast(attrs, [:title, :status, :pickup_point, :delivery_point])
+    |> cast_assoc(:assigned_user, with: &GeoTaskTracker.User.changeset/2)
+    |> validate_required([:title, :status, :pickup_point, :delivery_point])
+    |> validate_length(:title, max: 256)
+    |> validate_inclusion(:status, ["new", "assigned", "done"])
   end
 end

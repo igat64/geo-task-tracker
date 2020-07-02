@@ -3,10 +3,13 @@ defmodule GeoTaskTrackerWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug GeoTaskTrackerWeb.AuthPlug
   end
 
-  scope "/api", GeoTaskTrackerWeb do
+  scope "/api/v1", GeoTaskTrackerWeb do
     pipe_through :api
+
+    post "/tasks", TaskController, :create
   end
 
   # Enables LiveDashboard only for development
