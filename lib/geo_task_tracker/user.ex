@@ -10,7 +10,7 @@ defmodule GeoTaskTracker.User do
   end
 
   @doc false
-  def changeset(user, attrs) do
+  def changeset(user, attrs \\ %{}) do
     user
     |> cast(attrs, [:name, :role])
     |> validate_required([:name, :role])
