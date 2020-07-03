@@ -23,7 +23,13 @@ defmodule GeoTaskTrackerWeb.TaskController do
     end
   end
 
-  def find_nearby(conn, _params, user) do
+  def find_nearby(conn, %{"lat" => lat, "lon" => lon}, user) do
+    case Tracker.find_tasks_nearby({lat, lon}, user) do
+      {:ok, tasks} ->
+        conn
+        |> put_status(200)
+        |> render("tasks.json", tasks: tasks)
+    end
   end
 
   def pickup(conn, %{"id" => id}, user) do

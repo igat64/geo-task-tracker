@@ -1,4 +1,7 @@
 defmodule GeoTaskTracker.Tracker do
+  import Ecto.Query
+  import Geo.PostGIS
+
   alias GeoTaskTracker.{Task, User, Repo}
 
   def create_task(attrs, _user) do
@@ -23,7 +26,15 @@ defmodule GeoTaskTracker.Tracker do
     |> Repo.insert()
   end
 
-  def find_tasks_nearby(%Geo.Point{} = point, radius \\ 5) do
+  def find_tasks_nearby(coordinates, _user) do
+    geo_point = %Geo.Point{coordinates: coordinates, srid: 4326}
+
+    query =
+      from task in Task,
+        order_by: st_distance(task.pickup_point, ^geo_point),
+        limit: 100
+
+    {:ok, Repo.all(query)}
   end
 
   def pickup_task(id, %User{} = user) do

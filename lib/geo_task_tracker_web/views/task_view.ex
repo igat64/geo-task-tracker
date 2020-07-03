@@ -16,4 +16,8 @@ defmodule GeoTaskTrackerWeb.TaskView do
       updated_at: task.updated_at
     }
   end
+
+  def render("tasks.json", %{tasks: tasks}) do
+    render_many(tasks, GeoTaskTrackerWeb.TaskView, "task.json")
+  end
 end
