@@ -27,9 +27,7 @@ defmodule GeoTaskTrackerWeb.TaskController do
   end
 
   def pickup(conn, %{"id" => id}, user) do
-    task_id = String.to_integer(id)
-
-    case Tracker.pickup_task(task_id, user) do
+    case Tracker.pickup_task(id, user) do
       {:ok, task} ->
         conn
         |> put_status(201)
@@ -47,9 +45,7 @@ defmodule GeoTaskTrackerWeb.TaskController do
   end
 
   def complete(conn, %{"id" => id}, user) do
-    task_id = String.to_integer(id)
-
-    case Tracker.complete_task(task_id, user) do
+    case Tracker.complete_task(id, user) do
       {:ok, task} ->
         conn
         |> put_status(201)
@@ -66,6 +62,19 @@ defmodule GeoTaskTrackerWeb.TaskController do
     end
   end
 
-  def delete(conn, _params, user) do
+  def delete(conn, %{"id" => id}, user) do
+    case Tracker.delete_task(id, user) do
+      {:ok, _} ->
+        resp(conn, 204, "")
+
+      {:error, :forbidden} ->
+        resp(conn, 403, "")
+
+      {:error, :not_found} ->
+        resp(conn, 404, "")
+
+      _ ->
+        resp(conn, 500, "")
+    end
   end
 end

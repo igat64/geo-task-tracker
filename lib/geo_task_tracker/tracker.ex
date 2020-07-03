@@ -57,6 +57,15 @@ defmodule GeoTaskTracker.Tracker do
     end
   end
 
-  def delete_task(id) do
+  def delete_task(id, _user) do
+    task = Repo.get(Task, id)
+
+    case task do
+      %Task{} ->
+        Repo.delete(task)
+
+      _ ->
+        {:error, :not_found}
+    end
   end
 end
