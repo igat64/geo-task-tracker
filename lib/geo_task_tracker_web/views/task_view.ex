@@ -12,12 +12,14 @@ defmodule GeoTaskTrackerWeb.TaskView do
       pickup_point: %{lat: pp_lat, lon: pp_lon},
       delivery_point: %{lat: dp_lat, lon: dp_lon},
       assigned_user_id: task.assigned_user_id,
-      inserted_at: task.inserted_at,
-      updated_at: task.updated_at
     }
   end
 
-  def render("tasks.json", %{tasks: tasks}) do
-    render_many(tasks, GeoTaskTrackerWeb.TaskView, "task.json")
+  def render("index.json", %{tasks: tasks}) do
+    %{data: render_many(tasks, __MODULE__, "task.json")}
+  end
+
+  def render("show.json", %{task: task}) do
+    %{data: render_one(task, __MODULE__, "task.json")}
   end
 end
