@@ -18,7 +18,7 @@ config :geo_task_tracker, GeoTaskTracker.Repo,
 # with webpack to recompile .js and .css sources.
 config :geo_task_tracker, GeoTaskTrackerWeb.Endpoint,
   http: [port: 4000],
-  debug_errors: true,
+  debug_errors: false,
   code_reloader: true,
   check_origin: false,
   watchers: []

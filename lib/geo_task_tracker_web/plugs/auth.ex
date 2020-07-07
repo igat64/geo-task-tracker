@@ -1,5 +1,6 @@
 defmodule GeoTaskTrackerWeb.AuthPlug do
   import Plug.Conn
+  import Phoenix.Controller
 
   alias GeoTaskTrackerWeb.{Authentication}
 
@@ -10,8 +11,11 @@ defmodule GeoTaskTrackerWeb.AuthPlug do
       {:ok, user} ->
         assign(conn, :user, user)
 
-      {:error, _reason} ->
-        conn |> halt() |> resp(401, "")
+      {:error, reason} ->
+        conn
+        |> put_status(401)
+        |> put_view(GeoTaskTrackerWeb.ErrorView)
+        |> render("401.json", message: reason)
     end
   end
 end
