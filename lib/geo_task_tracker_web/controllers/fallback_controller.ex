@@ -12,6 +12,13 @@ defmodule GeoTaskTrackerWeb.FallbackController do
     |> render(:"404")
   end
 
+  def call(conn, {:error, :bad_request}) do
+    conn
+    |> put_status(400)
+    |> put_view(GeoTaskTrackerWeb.ErrorView)
+    |> render(:"400")
+  end
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(422)

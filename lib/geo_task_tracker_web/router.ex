@@ -3,7 +3,7 @@ defmodule GeoTaskTrackerWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug GeoTaskTrackerWeb.AuthPlug
+    plug GeoTaskTrackerWeb.AuthenticatePlug
   end
 
   scope "/api/v1", GeoTaskTrackerWeb do

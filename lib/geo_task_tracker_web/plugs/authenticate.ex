@@ -1,4 +1,4 @@
-defmodule GeoTaskTrackerWeb.AuthPlug do
+defmodule GeoTaskTrackerWeb.AuthenticatePlug do
   import Plug.Conn
   import Phoenix.Controller
 
