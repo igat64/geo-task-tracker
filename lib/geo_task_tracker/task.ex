@@ -12,11 +12,14 @@ defmodule GeoTaskTracker.Task do
     timestamps()
   end
 
+  @required_fields ~w(title status pickup_point delivery_point)a
+  @optional_fields ~w(assigned_user_id)a
+
   @doc false
   def changeset(%GeoTaskTracker.Task{} = task, attrs \\ %{}) do
     task
-    |> cast(attrs, [:title, :status, :pickup_point, :delivery_point, :assigned_user_id])
-    |> validate_required([:title, :status, :pickup_point, :delivery_point])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> validate_length(:title, max: 256)
     |> validate_inclusion(:status, ["new", "assigned", "done"])
   end

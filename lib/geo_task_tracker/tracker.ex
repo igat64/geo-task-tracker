@@ -5,12 +5,13 @@ defmodule GeoTaskTracker.Tracker do
   alias GeoTaskTracker.{Task, User, Repo}
 
   def create_task(attrs, _user) do
-    pickup = Map.get(attrs, "pickup_point")
-    delivery = Map.get(attrs, "delivery_point")
+    title = attrs["title"]
+    pickup = attrs["pickup_point"]
+    delivery = attrs["delivery_point"]
 
-    changes = %{
+    data = %{
       status: "new",
-      title: attrs["title"],
+      title: title,
       pickup_point: %Geo.Point{
         coordinates: {pickup["lat"], pickup["lon"]},
         srid: 4326
@@ -22,7 +23,7 @@ defmodule GeoTaskTracker.Tracker do
     }
 
     %Task{}
-    |> Task.changeset(changes)
+    |> Task.changeset(data)
     |> Repo.insert()
   end
 
