@@ -71,23 +71,18 @@ defmodule GeoTaskTrackerWeb.TaskController do
 
   action_fallback GeoTaskTrackerWeb.FallbackController
 
-  def action(conn, _) do
-    args = [conn, conn.params, conn.assigns.user]
-    apply(__MODULE__, action_name(conn), args)
-  end
-
-  def create(conn, params, user) do
-    with {:ok, task} <- Tracker.create_task(params, user) do
+  def create(conn, params) do
+    with {:ok, task} <- Tracker.create_task(params) do
       conn
       |> put_status(201)
       |> render("show.json", task: task)
     end
   end
 
-  def find_nearby(conn, %{"lat" => lat, "lon" => lon}, user) do
+  def find_nearby(conn, %{"lat" => lat, "lon" => lon}) do
     with {:ok, lat} <- parse_nearby_param(lat),
          {:ok, lon} <- parse_nearby_param(lon),
-         {:ok, tasks} <- Tracker.find_tasks_nearby({lat, lon}, user) do
+         {:ok, tasks} <- Tracker.find_tasks_nearby({lat, lon}) do
       conn
       |> put_status(200)
       |> render("index.json", tasks: tasks)
@@ -97,7 +92,8 @@ defmodule GeoTaskTrackerWeb.TaskController do
     end
   end
 
-  def pickup(conn, %{"id" => id}, user) do
+  def pickup(conn, %{"id" => id}) do
+    user = conn.assigns.user
     with {:ok, task} <- Tracker.pickup_task(id, user) do
       conn
       |> put_status(200)
@@ -105,16 +101,16 @@ defmodule GeoTaskTrackerWeb.TaskController do
     end
   end
 
-  def complete(conn, %{"id" => id}, user) do
-    with {:ok, task} <- Tracker.complete_task(id, user) do
+  def complete(conn, %{"id" => id}) do
+    with {:ok, task} <- Tracker.complete_task(id) do
       conn
       |> put_status(200)
       |> render("show.json", task: task)
     end
   end
 
-  def delete(conn, %{"id" => id}, user) do
-    with {:ok, _} <- Tracker.delete_task(id, user) do
+  def delete(conn, %{"id" => id}) do
+    with {:ok, _} <- Tracker.delete_task(id) do
       resp(conn, 204, "")
     end
   end
@@ -125,7 +121,7 @@ defmodule GeoTaskTrackerWeb.TaskController do
         {:ok, match |> Float.parse() |> elem(0)}
 
       nil ->
-        {:error, :bad_input}
+        {:error, :malformed}
     end
   end
 end

@@ -6,7 +6,7 @@ defmodule GeoTaskTracker.Tracker do
   alias GeoTaskTracker.Tracker.Task
   alias GeoTaskTracker.Accounts.User
 
-  def create_task(attrs, _user) do
+  def create_task(attrs) do
     title = attrs["title"]
     pickup = attrs["pickup_point"]
     delivery = attrs["delivery_point"]
@@ -29,7 +29,7 @@ defmodule GeoTaskTracker.Tracker do
     |> Repo.insert()
   end
 
-  def find_tasks_nearby(coordinates, _user) do
+  def find_tasks_nearby(coordinates) do
     geo_point = %Geo.Point{coordinates: coordinates, srid: 4326}
 
     query =
@@ -57,7 +57,7 @@ defmodule GeoTaskTracker.Tracker do
     end
   end
 
-  def complete_task(id, _user) do
+  def complete_task(id) do
     task = Repo.get(Task, id)
 
     case task do
@@ -71,7 +71,7 @@ defmodule GeoTaskTracker.Tracker do
     end
   end
 
-  def delete_task(id, _user) do
+  def delete_task(id) do
     task = Repo.get(Task, id)
 
     case task do
