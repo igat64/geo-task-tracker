@@ -1,7 +1,7 @@
 defmodule GeoTaskTrackerWeb.TaskController do
   use GeoTaskTrackerWeb, :controller
 
-  alias GeoTaskTrackerWeb.ValidateParamsPlug
+  alias GeoTaskTrackerWeb.{AuthorizePlug, ValidateParamsPlug}
   alias GeoTaskTracker.Tracker
   alias ExJsonSchema.Schema
 
@@ -40,6 +40,26 @@ defmodule GeoTaskTrackerWeb.TaskController do
                                  }
                                }
                              })
+
+  plug AuthorizePlug,
+       [action: "create", resource: "task"]
+       when action in [:create]
+
+  plug AuthorizePlug,
+       [action: "find_nearby", resource: "task"]
+       when action in [:find_nearby]
+
+  plug AuthorizePlug,
+       [action: "pickup", resource: "task"]
+       when action in [:pickup]
+
+  plug AuthorizePlug,
+       [action: "complete", resource: "task"]
+       when action in [:complete]
+
+  plug AuthorizePlug,
+       [action: "delete", resource: "task"]
+       when action in [:delete]
 
   plug ValidateParamsPlug,
        [schema: @task_params_schema, error_status: 422]
