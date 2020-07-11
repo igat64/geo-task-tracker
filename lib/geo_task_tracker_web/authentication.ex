@@ -1,7 +1,8 @@
 defmodule GeoTaskTrackerWeb.Authentication do
   import Plug.Conn
 
-  alias GeoTaskTracker.{Account, User}
+  alias GeoTaskTracker.Accounts
+  alias GeoTaskTracker.Accounts.User
 
   def authenticate(conn) do
     with {:ok, token} <- extract_token(conn),
@@ -26,7 +27,7 @@ defmodule GeoTaskTrackerWeb.Authentication do
   end
 
   defp find_user(user_id) do
-    case Account.get_user(user_id) do
+    case Accounts.get_user(user_id) do
       %User{} = user -> {:ok, user}
       _ -> {:error, "The user is no longer exists"}
     end

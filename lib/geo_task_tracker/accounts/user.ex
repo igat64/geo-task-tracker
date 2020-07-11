@@ -1,4 +1,4 @@
-defmodule GeoTaskTracker.User do
+defmodule GeoTaskTracker.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 

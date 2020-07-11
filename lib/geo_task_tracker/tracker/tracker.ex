@@ -2,7 +2,9 @@ defmodule GeoTaskTracker.Tracker do
   import Ecto.Query
   import Geo.PostGIS
 
-  alias GeoTaskTracker.{Task, User, Repo}
+  alias GeoTaskTracker.Repo
+  alias GeoTaskTracker.Tracker.Task
+  alias GeoTaskTracker.Accounts.User
 
   def create_task(attrs, _user) do
     title = attrs["title"]

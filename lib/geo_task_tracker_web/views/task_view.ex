@@ -11,7 +11,7 @@ defmodule GeoTaskTrackerWeb.TaskView do
       status: task.status,
       pickup_point: %{lat: pp_lat, lon: pp_lon},
       delivery_point: %{lat: dp_lat, lon: dp_lon},
-      assigned_user_id: task.assigned_user_id,
+      assigned_user_id: task.assigned_user_id
     }
   end
 
