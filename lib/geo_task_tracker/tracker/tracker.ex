@@ -6,6 +6,10 @@ defmodule GeoTaskTracker.Tracker do
   alias GeoTaskTracker.Tracker.Task
   alias GeoTaskTracker.Accounts.User
 
+  def get_task!(id) do
+    Repo.get!(Task, id)
+  end
+
   def create_task(attrs) do
     title = attrs["title"]
     pickup = attrs["pickup_point"]
@@ -40,46 +44,19 @@ defmodule GeoTaskTracker.Tracker do
     {:ok, Repo.all(query)}
   end
 
-  def pickup_task(id, %User{} = user) do
-    task = Repo.get(Task, id)
-
-    case task do
-      %Task{} ->
-        task
-        |> Task.changeset(%{
-          assigned_user_id: user.id,
-          status: "assigned"
-        })
-        |> Repo.update()
-
-      _ ->
-        {:error, :not_found}
-    end
+  def pickup_task(%Task{} = task, %User{} = user) do
+    task
+    |> Task.changeset(%{status: "assigned", assigned_user_id: user.id})
+    |> Repo.update()
   end
 
-  def complete_task(id) do
-    task = Repo.get(Task, id)
-
-    case task do
-      %Task{} ->
-        task
-        |> Task.changeset(%{status: "done"})
-        |> Repo.update()
-
-      _ ->
-        {:error, :not_found}
-    end
+  def complete_task(%Task{} = task) do
+    task
+    |> Task.changeset(%{status: "done"})
+    |> Repo.update()
   end
 
-  def delete_task(id) do
-    task = Repo.get(Task, id)
-
-    case task do
-      %Task{} ->
-        Repo.delete(task)
-
-      _ ->
-        {:error, :not_found}
-    end
+  def delete_task(%Task{} = task) do
+    Repo.delete(task)
   end
 end

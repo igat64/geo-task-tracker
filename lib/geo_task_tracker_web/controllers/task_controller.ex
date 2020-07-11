@@ -94,7 +94,8 @@ defmodule GeoTaskTrackerWeb.TaskController do
 
   def pickup(conn, %{"id" => id}) do
     user = conn.assigns.user
-    with {:ok, task} <- Tracker.pickup_task(id, user) do
+
+    with {:ok, task} <- Tracker.get_task!(id) |> Tracker.pickup_task(user) do
       conn
       |> put_status(200)
       |> render("show.json", task: task)
@@ -102,7 +103,7 @@ defmodule GeoTaskTrackerWeb.TaskController do
   end
 
   def complete(conn, %{"id" => id}) do
-    with {:ok, task} <- Tracker.complete_task(id) do
+    with {:ok, task} <- Tracker.get_task!(id) |> Tracker.complete_task() do
       conn
       |> put_status(200)
       |> render("show.json", task: task)
@@ -110,7 +111,7 @@ defmodule GeoTaskTrackerWeb.TaskController do
   end
 
   def delete(conn, %{"id" => id}) do
-    with {:ok, _} <- Tracker.delete_task(id) do
+    with {:ok, _task} <- Tracker.get_task!(id) |> Tracker.delete_task() do
       resp(conn, 204, "")
     end
   end
