@@ -6,14 +6,14 @@ defmodule GeoTaskTrackerWeb.Router do
     plug GeoTaskTrackerWeb.AuthenticatePlug
   end
 
-  scope "/api/v1", GeoTaskTrackerWeb do
+  scope "/", GeoTaskTrackerWeb do
     pipe_through :api
 
     post "/tasks", TaskController, :create
+    delete "/tasks/:id", TaskController, :delete
     post "/tasks/:id/pickup", TaskController, :pickup
     post "/tasks/:id/complete", TaskController, :complete
     get "/tasks/nearby/:lat/:lon", TaskController, :find_nearby
-    delete "/tasks/:id", TaskController, :delete
   end
 
   # Enables LiveDashboard only for development

@@ -36,16 +36,71 @@ Each task can be in 3 states:
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
+  * Configure PostresSQL credentials in the `config/dev.exs`
   * Create and migrate your database with `mix ecto.setup`
+  * Populate database `mix run priv/repo/seeds.exs`
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Predefined tokens:
-- driver `SFMyNTY.g2gDYQFuBgAz1JQ8cwFiAeGH4A.ZZ5txN7IPlSNS1AszqhYLGFCJyhbzeIuuhZGz3wI6gE`
-- manager `SFMyNTY.g2gDYQJuBgDBNJU8cwFiAeGH4A.LrhjGfLK0yyBiwQ4TH10gUK6AkpkLi9xiJ0pitMZpOg`
+Before running test you need provide access to the local database in the `config/test.exs` and then run `mix test`
 
-Create signed token in the iex session (`iex -S mix`):
+Predefined tokens:
+- driver  (`id: 1`) `SFMyNTY.g2gDYQFuBgA2dxpDcwFiAeGH4A.dQtg9T0yJd7ded3yoJcX0KeEV0fIoGLCj0dQNlEOG6A`
+- manager (`id: 2`) `SFMyNTY.g2gDYQJuBgAboxhDcwFiAeGH4A.e9e7koBLfZL0pBQznZLtDoXgscZQ1nAL6ByxNdPBvIo`
+
+Create signed token in the iex session (`iex -S mix`) if needed:
 ```elixir
-Phoenix.Token.sign(GeoTaskTrackerWeb.Endpoint, "user auth", user_id)
+Phoenix.Token.sign(GeoTaskTrackerWeb.Endpoint, "user", user_id, max_age: 31557600)
+```
+
+Create task
+
+```bash
+curl --location --request POST 'localhost:4000/tasks' \
+--header 'Authorization: SFMyNTY.g2gDYQJuBgAboxhDcwFiAeGH4A.e9e7koBLfZL0pBQznZLtDoXgscZQ1nAL6ByxNdPBvIo' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title": "Haul the cargo",
+	"pickup_point": {
+		"lat": 0,
+		"lon": 90
+	},
+	"delivery_point": {
+		"lat": 0,
+		"lon": -90
+	}
+}'
+```
+
+Pickup task
+
+```bash
+curl --location --request POST 'localhost:4000/tasks/1/pickup' \
+--header 'Authorization: SFMyNTY.g2gDYQFuBgA2dxpDcwFiAeGH4A.dQtg9T0yJd7ded3yoJcX0KeEV0fIoGLCj0dQNlEOG6A' \
+--data-raw ''
+```
+
+Complete task
+
+```bash
+curl --location --request POST 'localhost:4000/tasks/1/complete' \
+--header 'Authorization: SFMyNTY.g2gDYQFuBgA2dxpDcwFiAeGH4A.dQtg9T0yJd7ded3yoJcX0KeEV0fIoGLCj0dQNlEOG6A' \
+--data-raw ''
+```
+
+Search nearby
+
+```bash
+curl --location --request GET 'localhost:4000/tasks/nearby/53.21/26.12' \
+--header 'Authorization: SFMyNTY.g2gDYQFuBgA2dxpDcwFiAeGH4A.dQtg9T0yJd7ded3yoJcX0KeEV0fIoGLCj0dQNlEOG6A' \
+--data-raw ''
+```
+
+Delete task
+
+```bash
+curl --location --request DELETE 'localhost:4000/tasks/24' \
+--header 'Authorization: SFMyNTY.g2gDYQJuBgAboxhDcwFiAeGH4A.e9e7koBLfZL0pBQznZLtDoXgscZQ1nAL6ByxNdPBvIo' \
+--data-raw ''
 ```

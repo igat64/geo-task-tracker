@@ -19,7 +19,7 @@ defmodule GeoTaskTrackerWeb.Authentication do
   end
 
   defp verify_token(conn, token) do
-    case Phoenix.Token.verify(conn, "user auth", token) do
+    case Phoenix.Token.verify(conn, "user", token) do
       {:error, :invalid} -> {:error, "The token is invalid"}
       {:error, :expired} -> {:error, "The token has expired"}
       result -> result
