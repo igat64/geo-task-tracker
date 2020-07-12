@@ -13,6 +13,7 @@ defmodule GeoTaskTrackerWeb.AuthenticatePlug do
 
       {:error, reason} ->
         conn
+        |> halt()
         |> put_status(401)
         |> put_view(GeoTaskTrackerWeb.ErrorView)
         |> render("401.json", message: reason)

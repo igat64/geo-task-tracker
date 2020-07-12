@@ -9,10 +9,10 @@ defmodule GeoTaskTracker.Accounts.User do
     timestamps()
   end
 
-  @doc false
   def changeset(user, attrs \\ %{}) do
     user
     |> cast(attrs, [:name, :role])
     |> validate_required([:name, :role])
+    |> validate_inclusion(:role, ["manager", "driver"])
   end
 end

@@ -44,7 +44,8 @@ defmodule GeoTaskTracker.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:geo_postgis, "~> 3.1"},
-      {:ex_json_schema, "~> 0.7.3"}
+      {:ex_json_schema, "~> 0.7.3"},
+      {:ex_machina, "~> 2.4", only: :test}
     ]
   end
 

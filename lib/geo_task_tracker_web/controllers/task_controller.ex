@@ -5,7 +5,7 @@ defmodule GeoTaskTrackerWeb.TaskController do
   alias GeoTaskTracker.Tracker
   alias ExJsonSchema.Schema
 
-  @task_params_schema Schema.resolve(%{
+  @task_params_schema %{
                         "type" => "object",
                         "required" => ["title", "pickup_point", "delivery_point"],
                         "properties" => %{
@@ -23,9 +23,10 @@ defmodule GeoTaskTrackerWeb.TaskController do
                             }
                           }
                         }
-                      })
+                      }
+                      |> Schema.resolve()
 
-  @task_nearby_params_schema Schema.resolve(%{
+  @task_nearby_params_schema %{
                                "type" => "object",
                                "required" => ["lat", "lon"],
                                "properties" => %{
@@ -39,7 +40,8 @@ defmodule GeoTaskTrackerWeb.TaskController do
                                    "maxLength" => 16
                                  }
                                }
-                             })
+                             }
+                             |> Schema.resolve()
 
   plug AuthorizePlug,
        [action: "create", resource: "task"]
